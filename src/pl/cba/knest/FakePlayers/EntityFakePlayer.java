@@ -11,7 +11,4 @@ public class EntityFakePlayer extends EntityPlayer {
 	public EntityFakePlayer(MinecraftServer minecraftserver, WorldServer worldserver, GameProfile gameprofile, PlayerInteractManager playerinteractmanager) {
 		super(minecraftserver, worldserver, gameprofile, playerinteractmanager);
 	}
-
-
-
 }
