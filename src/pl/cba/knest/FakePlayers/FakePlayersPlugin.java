@@ -72,6 +72,7 @@ public class FakePlayersPlugin extends JavaPlugin implements Listener {
 		
 		EntityFakePlayer fp = new EntityFakePlayer(server, ws, new GameProfile(uuid, "twojastara"), new PlayerInteractManager(ws));
 		fp.playerConnection = new FakePlayerConnection(server, new NetworkManager(false), fp);
+		fp.setPosition(l.getX(), l.getY(), l.getZ());
 		return fp;
 	}
 }
