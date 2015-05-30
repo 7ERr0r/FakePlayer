@@ -4,7 +4,6 @@ package pl.cba.knest.FakePlayers;
 
 import java.util.UUID;
 
-import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.PlayerInteractManager;
@@ -14,7 +13,6 @@ import net.minecraft.util.com.mojang.authlib.GameProfile;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.entity.Player;
@@ -39,19 +37,16 @@ public class FakePlayersPlugin extends JavaPlugin implements Listener {
 		log("Enabled");
 	}
 	
+	@SuppressWarnings({ "unused" })
 	@EventHandler
 	public void onFarClick(PlayerInteractEvent e){
 		Player p = e.getPlayer();
 		Action a = e.getAction();
 		ItemStack is = p.getItemInHand();
 		if(a == Action.LEFT_CLICK_AIR && is != null && is.getType() == Material.SPONGE){
-			@SuppressWarnings("deprecation")
-			Block b = p.getTargetBlock(null, 50);
-			Location l = b.getLocation().add(0, 1, 0);
-			EntityPlayer fp = newFakePlayer(l);
-			World w = p.getWorld();
-			WorldServer ws = ((CraftWorld) w).getHandle();
-			ws.addEntity(fp);
+			//Block b = p.getTargetBlock(null, 50);
+			Location l = p.getLocation().add(0, 0, 0);
+			EntityFakePlayer fp = newFakePlayer(l);
 		}
 		
 	}
@@ -64,7 +59,7 @@ public class FakePlayersPlugin extends JavaPlugin implements Listener {
 		}
 	}
 
-	private EntityPlayer newFakePlayer(Location l){
+	private EntityFakePlayer newFakePlayer(Location l){
 		UUID uuid = UUID.randomUUID();
 		World w = l.getWorld();
 		WorldServer ws = ((CraftWorld) w).getHandle();
@@ -72,7 +67,13 @@ public class FakePlayersPlugin extends JavaPlugin implements Listener {
 		
 		EntityFakePlayer fp = new EntityFakePlayer(server, ws, new GameProfile(uuid, "twojastara"), new PlayerInteractManager(ws));
 		fp.playerConnection = new FakePlayerConnection(server, new NetworkManager(false), fp);
-		fp.setPosition(l.getX(), l.getY(), l.getZ());
+		//fp.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
+		//fp.getHeadRotation();
+		//fp.getBukkitEntity().teleport(l);
+		fp.aO = l.getYaw();
+		fp.getBukkitEntity().teleport(l);
+		ws.addEntity(fp);
+		
 		return fp;
 	}
 }
